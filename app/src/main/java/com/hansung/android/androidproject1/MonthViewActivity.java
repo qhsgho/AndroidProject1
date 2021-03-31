@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +25,8 @@ public class MonthViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         Intent intent = getIntent();
         year = intent.getIntExtra("year", -1);
         month = intent.getIntExtra("month", -1);
@@ -32,13 +36,22 @@ public class MonthViewActivity extends AppCompatActivity {
             month = cal.get(Calendar.MONTH)+1;
         }
 
+
+
         cal.set(year, month-1, 1);
+
+
 
         TextView dat = (TextView)findViewById(R.id.cal_date);
         dat.setText(year +"년 "+ month +"월");
 
+        
+
+
         Button btn_pre = findViewById(R.id.cal_previous);
         btn_pre.setOnClickListener(new View.OnClickListener() {
+
+
 
             @Override
             public void onClick(View v) {
@@ -98,11 +111,14 @@ public class MonthViewActivity extends AppCompatActivity {
 
         ArrayList<String> items = new ArrayList<String>();
         for(int i = 1; i < cal.get(Calendar.DAY_OF_WEEK); i++) {
-            items.add("");
+            items.add(" ");
         }
 
         for(int i = 0; i < finddaynum(year, month); i++) {
-            items.add(""+(i+1));
+            if(i>=0&&i<=8)
+                items.add("  "+(i+1));
+            else
+                items.add(Integer.toString(i+1));
         }
 
 
@@ -114,8 +130,16 @@ public class MonthViewActivity extends AppCompatActivity {
 
 
         GridView gridview = (GridView) findViewById(R.id.calendar_gridview);
-
         gridview.setAdapter(adapt);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Object o = (Object)adapterView.getAdapter().getItem(i);
+                Toast.makeText(getApplicationContext(),year+"."+month+"."+o,Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
 
@@ -148,4 +172,7 @@ public class MonthViewActivity extends AppCompatActivity {
         }
         return day_num;
     }
+
+
+
 }
