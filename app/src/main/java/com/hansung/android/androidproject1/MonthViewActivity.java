@@ -135,7 +135,8 @@ public class MonthViewActivity extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Object o = (Object)adapterView.getAdapter().getItem(i);
+                String o = (String)adapterView.getAdapter().getItem(i);
+                o = o.replace(" ","");
                 Toast.makeText(getApplicationContext(),year+"."+month+"."+o,Toast.LENGTH_SHORT).show();
             }
         });
